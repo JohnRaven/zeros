@@ -1,36 +1,33 @@
 module.exports = function zeros(expression) {
   var str = expression;
-  var re = /(\d+)(?=!!)/g;  // ------регулярные выражения      https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Regular_Expressions
-                            //--- /{(\d+)}/g  --- вытягивает все числа внутри скобок {_}
-                            //--- /\{([^\}]*)\}/  
-                            //--- /\*([^\!!]*)\!!/g  --- вытягивает все числа внутри скобок *_!!
+  var re = /(\d+)(?=!!)/g;  
   var reX = /(\d+)(?=!)/g;
 
   var exist_pos;
-  while ((m = reX.exec(str)) !== null) { //----Проверка наличие обычного или двойн.полож.факториала
+  while ((m = reX.exec(str)) !== null) { 
     if (m[1] % 2 == 0) { 
       exist_pos = true;
     } 
   }   
 
   var arrRes = [];
-  while ((m = re.exec(str)) !== null) { //----Работа с двойными факториалами
+  while ((m = re.exec(str)) !== null) { 
     var res = 0;
 
-    if (m[1] % 2 == 0) { //--- ЧЕТНЫЕ двойные факториалы
-          if (m[1] / 50 >= 1) {res = 1;} //--- проверка четн. двоичного факт. на условие > 50!
+    if (m[1] % 2 == 0) { 
+          if (m[1] / 50 >= 1) {res = 1;} 
           let n = m[1];
           while (n > 0) {
             n /= 10;
-            res += Math.trunc(n);     // -целое значение из десятичного числа
+            res += Math.trunc(n);    
           }
           arrRes.push(res);
           str = str.replace(m[1], ' ');
-    } else if (m[1] % 2 != 0 && exist_pos != true) { //--- НЕчетные двойные факториалы (четных в списке нет)
+    } else if (m[1] % 2 != 0 && exist_pos != true) { 
           let res = 0;
           arrRes.push(res);
           str = str.replace(m[1], ' ');
-    } else if (m[1] % 2 != 0 && exist_pos == true && m[1] >= 5) { //--- НЕчетные двойные факториалы (но есть четные в списке)
+    } else if (m[1] % 2 != 0 && exist_pos == true && m[1] >= 5) { 
           let res = Math.trunc((parseInt(m[1], 10) + 5) / 10);
           if (m[1] >= 25 && m[1] < 75) {
             res = res + 1;
@@ -42,7 +39,7 @@ module.exports = function zeros(expression) {
     }
   }
 
-  while ((m = reX.exec(str)) !== null) { //----Работа с обычными факториалами
+  while ((m = reX.exec(str)) !== null) { 
     let n = m[1];
     let res = 0;
     while (n > 0) {
@@ -53,100 +50,5 @@ module.exports = function zeros(expression) {
     str = str.replace(m[1], ' ');
   }
 
-  return (arrRes.reduce((a, b) => a + b, 0)); //сумма всех значений в массиве
+  return (arrRes.reduce((a, b) => a + b, 0)); 
 }
-
-/*
-let expression = '6!';
-console.log(expression);
-
-//----- поиск в строке чисел и запись их в массив http://qaru.site/questions/157629/how-to-find-a-number-in-a-string-using-javascript 
-    var exampl = /\d+/g; // эквивалентно--  new RegExp("\d+")
-    var number;              
-    var arrText = [];     
-    while ((number = exampl.exec(expression)) != null) {
-      arrText.push(number[0]);
-    }                           
-//-----
-
-//***** разложение факториала по множителям (по 5)
-    var res = 0;
-    for (let i=0; i<=arrText.length ;i++) {
-      let n = arrText[i];
-      while (n >= 1) {
-        n /= 5;
-        res += n;
-      }
-    }
-    console.log(Math.trunc(res));   // целая часть от числа
-    
-//*****
-*/
-
-
-
-/*
-    var str = '99!*99!!*100!*100!!';
-    var re = /(\d+)(?=!!)/g;  // ------регулярные выражения      https://developer.mozilla.org/ru/docs/Web/JavaScript/Guide/Regular_Expressions
-          //--- /{(\d+)}/g  --- вытягивает все числа внутри скобок {_}
-          //--- /\{([^\}]*)\}/  
-          //--- /\*([^\!!]*)\!!/g  --- вытягивает все числа внутри скобок *_!!
-    var reX = /(\d+)(?=!)/g;
-    
-    var exist_pos;
-    while ((m = reX.exec(str)) !== null) { //----Проверка наличие обычного факториала
-      if (m[1] % 2 == 0) { //-- и удаление всех 1!
-        exist_pos = true;
-      } 
-      // if (m[1] == 1 || m[1] == 3) {
-      //   str = str.replace(m[1], 't');
-      // }
-    }
-
-    var arrRes = [];
-    while ((m = re.exec(str)) !== null) { //----Работа с двойными факториалами
-      var res = 0;
-
-      if (m[1] % 2 == 0) { //--- четные двойные факториалы
-        if (m[1] / 50 >= 1) {
-          res = 1;
-        } //--- проверка четн. двоичного факт. на условие > 50!
-        let n = m[1];
-        while (n > 0) {
-          n /= 10;
-          res += Math.trunc(n);
-        }
-        arrRes.push(res);
-        str = str.replace(m[1], ' ');
-      } else if (m[1] % 2 != 0 && exist_pos != true) { //--- НЕчетные двойные факториалы
-        let res = 0;
-        arrRes.push(res);
-        str = str.replace(m[1], ' ');
-      } else if (m[1] % 2 != 0 && exist_pos == true && m[1] >= 5) { //--- НЕчетные двойные факториалы
-        let res = Math.trunc((parseInt(m[1], 10) + 5) / 10);
-        if (parseInt(m[1], 10) >= 25 && parseInt(m[1], 10) < 75) {
-          res = res + 1;
-        } else if (parseInt(m[1], 10) >= 75 && parseInt(m[1], 10) < 100) {
-          res = res + 2;
-        }
-        arrRes.push(res);
-        str = str.replace(m[1], ' ');
-      }
-    }
-    var reX = /(\d+)(?=!)/g;
-    while ((m = reX.exec(str)) !== null) { //----Работа с обычными факториалами
-      let n = m[1];
-      let res = 0;
-      while (n > 0) {
-        n /= 5;
-        res += Math.trunc(n);
-      }
-      arrRes.push(res);
-      str = str.replace(m[1], ' ');
-    }
-    console.log(arrRes.reduce((a, b) => a + b, 0))
-
-
-// console.log(arrText);
-console.log(arrRes, str);
-*/
